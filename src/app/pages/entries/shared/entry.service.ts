@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, throwError } from "rxjs";
-import { map, catchError, flatMap } from "rxjs/operators";
+import { Observable, throwError } from 'rxjs';
+import { map, catchError, flatMap } from 'rxjs/operators';
 
-import { Entry } from "./entry.model";
+import { Entry } from './entry.model';
+import { element } from '@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'
@@ -59,8 +60,12 @@ export class EntryService {
   //PRIVATE METHODS
 
   private jsonDataToCategories(jsonData: any[]): Entry[]{
-    const entries: Entry[] =[];
-    jsonData.forEach(element => entries.push(element as Entry));
+    const entries: Entry[] = [];
+
+    jsonData.forEach(element => {
+      const entry = Object.assign(new Entry(), element);
+      entries.push(entry);
+    });
     return entries;
   }
 
