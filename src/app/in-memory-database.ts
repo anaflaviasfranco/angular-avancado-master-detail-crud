@@ -35,4 +35,8 @@ export class InMemoryDataBase implements InMemoryDbService{
 
         return { categories, entries}
     }
+
+    /*genId(collection: any[]): number {
+        return collection.length > 0 ? Math.max(...collection.map(item => item.id)) + 1 : 1;
+    } */
 }
