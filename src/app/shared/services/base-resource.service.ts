@@ -1,5 +1,6 @@
 import {BaseResourceModel}   from '../models/base-resource.model';
 
+import { Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { Observable, throwError } from "rxjs";
@@ -7,6 +8,13 @@ import { map, catchError } from "rxjs/operators";
 
 
 export abstract class BaseResourceService<T extends BaseResourceModel>{
+
+  protected http: HttpClient;
+
+  constructor(protected apiPath : string, protected injector: Injector){
+    this.http = injector.get(HttpClient);
+    
+  }
     
   getAll(): Observable<T[]> {
     return this.http.get(this.apiPath).pipe(
@@ -47,6 +55,24 @@ export abstract class BaseResourceService<T extends BaseResourceModel>{
         catchError(this.handleError),
         map(() => null)
       );
+    }
 
+        //PROTECTED METHODS
+
+  protected jsonDataToResources(jsonData: any[]): T[]{
+    const resources: T[] =[];
+    jsonData.forEach(element => resources.push(element as T));
+    return resources;
+  }
+
+  protected jsonDataToResource(jsonData: any): T{
+    return jsonData as T;
+  }
+
+  // tslint:disable-next-line: no-unused-expression
+  protected handleError(error: any): Observable<any>{
+    console.log('ERRO NA REQUISIÇÃO => ', error );
+    return throwError(error);
+  }
 
 }

@@ -1,38 +1,14 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, Injector } from '@angular/core';
 import { Category } from './category.model';
 
+import { BaseResourceService } from "../../../shared/services/base-resource.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-  create(category: Category) {
-    throw new Error('Method not implemented.');
+export class CategoryService extends BaseResourceService<Category> {
+
+  constructor(protected injector: Injector) { 
+    super("api/categories", injector )
   }
-
-  private apiPath: string = 'api/categories'
-
-  constructor(private http: HttpClient) { }
-
-    }
-
-  //PRIVATE METHODS
-
-  private jsonDataToCategories(jsonData: any[]): Category[]{
-    const categories: Category[] =[];
-    jsonData.forEach(element => categories.push(element as Category));
-    return categories;
-  }
-
-  private jsonDataToCategory(jsonData: any): Category{
-    return jsonData as Category;
-  }
-
-  // tslint:disable-next-line: no-unused-expression
-  private handleError(error: any): Observable<any>{
-    console.log('ERRO NA REQUISIÇÃO => ', error );
-    return throwError(error);
-  }
-  
 }
