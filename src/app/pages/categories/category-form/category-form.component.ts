@@ -1,13 +1,13 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { Category } from "../shared/category.model";
-import { CategoryService } from "../shared/category.service";
+import { Category } from '../shared/category.model';
+import { CategoryService } from '../shared/category.service';
 
-import { switchMap } from "rxjs/operators"; //manipular a rota
+import { switchMap } from 'rxjs/operators'; //manipular a rota
 
-import toastr from "toastr";
+import toastr from 'toastr';
 
 @Component({
   selector: 'app-category-form',
@@ -45,7 +45,7 @@ export class CategoryFormComponent implements OnInit {
     if(this.currentAction == "new"){
       this.createCategory();
     }else {
-      //currentAction == "edit"
+      // currentAction == "edit"
       this.updateCategory();
     }
   }
@@ -53,12 +53,13 @@ export class CategoryFormComponent implements OnInit {
 
 
 
-  //PRIVATE METHODS
+  // PRIVATE METHODS
   private setCurrentAction(){
-    if(this.route.snapshot.url[0].path == "new")
-     this.currentAction = "new"
-    else 
-      this.currentAction = "edit"
+    if(this.route.snapshot.url[0].path == 'new') {
+     this.currentAction = 'new';
+    } else {
+      this.currentAction = 'edit';
+    }
   }
 
   private buildCategoryForm() {
@@ -70,14 +71,14 @@ export class CategoryFormComponent implements OnInit {
   }
 
   private loadCategory(){
-    if (this.currentAction == "edit"){
+    if (this.currentAction == 'edit'){
       this.route.paramMap.pipe(
-        switchMap(params => this.categoryService.getById(+params.get("id")))
+        switchMap(params => this.categoryService.getById(+params.get('id')))
       )
       .subscribe(
         (category) => {
           this.category = category;
-          this.categoryForm.patchValue(category) //brinds loaded category data to CategoryForm
+          this.categoryForm.patchValue(category); // brinds loaded category data to CategoryForm
         },
         (error) => alert('Ocorreu um erro no servidor, tente mais tarde.')
       )
@@ -86,7 +87,7 @@ export class CategoryFormComponent implements OnInit {
 
   private setPageTitle (){
     if(this.currentAction == 'new'){
-      this.pageTitle = 'Cadastro de Nova Categoria'
+      this.pageTitle = 'Cadastro de Nova Categoria';
     }else{
       const categoryName = this.category.name || ''
       this.pageTitle =  'Editando Categoria: ' + categoryName;
@@ -118,20 +119,21 @@ export class CategoryFormComponent implements OnInit {
     toastr.success('Solicitação processada com sucesso!');
 
     // redirect/reload component page
-    this.router.navigateByUrl("categories", {skipLocationChange: true}).then(
-      () => this.router.navigate(["categories", category.id, "edit"])
+    this.router.navigateByUrl('categories', {skipLocationChange: true}).then(
+      () => this.router.navigate(['categories', category.id, 'edit'])
     )
   }
 
   private actionsForError(error){
-    toastr.error("Ocorreu um erro ao processar a sua solicitação!");
+    toastr.error('Ocorreu um erro ao processar a sua solicitação!');
 
     this.submittingForm = false;
 
-    if(error.status == 422) 
+    if(error.status == 422) {
       this.serverErrorMessages = JSON.parse(error._body).errors;
-    else 
-      this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor, tente mais tarde."]
+    } else {
+      this.serverErrorMessages = ['Falha na comunicação com o servidor. Por favor, tente mais tarde.']
+    }
     
   }
 
