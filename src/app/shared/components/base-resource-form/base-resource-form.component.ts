@@ -6,7 +6,7 @@ import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
 
 
-import { switchMap } from 'rxjs/operators'; //manipular a rota
+import { switchMap } from 'rxjs/operators'; // manipular a rota
 
 import toastr from 'toastr';
 
@@ -16,8 +16,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   currentAction: string;
   resourceForm: FormGroup;
   pageTitle: string;
-  serverErrorMessages: string[] = null; //mensagens com erro vindas do servidor
-  submittingForm: boolean = false; //desabilitar botao enviar p/ nao enviar a mesma coisa varias vezes
+  serverErrorMessages: string[] = null; // mensagens com erro vindas do servidor
+  submittingForm: boolean = false; // desabilitar botao enviar p/ nao enviar a mesma coisa varias vezes
 
   protected route: ActivatedRoute;
   protected router: Router;
@@ -47,7 +47,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   submitForm() {
     this.submittingForm = true;
-    if(this.currentAction == "new") {
+    if(this.currentAction === 'new') {
       this.createResource();
     } else {
       // currentAction == "edit"
@@ -56,7 +56,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected setCurrentAction() {
-    if(this.route.snapshot.url[0].path == 'new') {
+    if(this.route.snapshot.url[0].path === 'new') {
      this.currentAction = 'new';
     } else {
       this.currentAction = 'edit';
@@ -64,7 +64,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected loadResource() {
-    if (this.currentAction == 'edit') {
+    if (this.currentAction === 'edit') {
 
       this.route.paramMap.pipe(
         switchMap(params => this.resourceService.getById(+params.get('id')))
@@ -80,7 +80,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected setPageTitle () {
-    if(this.currentAction == 'new') {
+    if(this.currentAction === 'new') {
       this.pageTitle = this.createPageTitle();
     } else {
       this.pageTitle = this.editionPageTitle();
