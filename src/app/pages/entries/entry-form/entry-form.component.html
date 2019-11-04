@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<form [formGroup]="entryForm" (submit)="submitForm()">
+<form [formGroup]="resourceForm" (submit)="submitForm()">
 
 <div class="card">
   <div class="card-header">
@@ -33,7 +33,7 @@
           </select>
 
           <div class="text-danger" *ngIf="resourceForm.get('type').invalid && resourceForm.get('type').touched">
-            <div *ngIf="resourceForm.get('type').errors.required">dado obrigatório</div>
+            <div *ngIf="resourceForm.get('type').errors">dado obrigatório</div>
           </div>
         </div>
 
