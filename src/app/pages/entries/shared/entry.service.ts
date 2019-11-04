@@ -1,8 +1,9 @@
+import { catchError } from 'rxjs/operators';
 import { Injectable, Injector } from '@angular/core';
 
-import { BaseResourceService } from "../../../shared/services/base-resource.service";
+import { BaseResourceService } from '../../../shared/services/base-resource.service';
 
-import { CategoryService } from "../../categories/shared/category.service";
+import { CategoryService } from '../../categories/shared/category.service';
 import { Entry } from './entry.model';
 import { flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -17,24 +18,21 @@ export class EntryService extends BaseResourceService<Entry> {
    }
 
     create(entry: Entry): Observable<Entry>{
-      return this.categoryService.getById(entry.categoryId).pipe(
-        flatMap(category => {
-          entry.category = category;
-
-         return super.create(entry)
-        })
-      );
-
+      return this.setCategoryAndSendToServer(entry, super.create.bind(this));
     }
 
     update(entry: Entry): Observable<Entry>{
+      return this.setCategoryAndSendToServer(entry, super.update.bind(this));
+    }
+
+    private setCategoryAndSendToServer (entry: Entry, sendFn: any): Observable<Entry> {
       return this.categoryService.getById(entry.categoryId).pipe(
         flatMap( category => {
           entry.category = category;
 
           return super.create(entry)
-        })
-      )
+        }),
+        catchError(this.handleError)
+      );
     }
-  
 }
