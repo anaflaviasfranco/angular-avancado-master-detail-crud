@@ -12,7 +12,7 @@ interface BreadCrumbItem {
 })
 export class BreadCrumbComponent implements OnInit {
 
-  @Input() Itens: Array<BreadCrumbItem> = [];
+  @Input() items: Array<BreadCrumbItem> = [];
 
   constructor() { }
 
@@ -20,8 +20,8 @@ export class BreadCrumbComponent implements OnInit {
   }
 
   isTheLastItem( item: BreadCrumbItem): boolean {
-    const index = this.Itens.indexOf(item);
-    return index + 1 === this.Itens.length;
+    const index = this.items.indexOf(item);
+    return index + 1 === this.items.length;
   }
 
 }
